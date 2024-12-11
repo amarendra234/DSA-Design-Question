@@ -1,0 +1,50 @@
+class RandomizedSet {
+    List<Integer>arr;
+    HashMap<Integer,Integer>umap;
+Random random ;
+    public RandomizedSet() {
+        arr=new LinkedList<>();
+        umap=new HashMap<>();
+      
+        random=new Random();
+
+    }
+    
+    public boolean insert(int val) {
+        if(umap.containsKey(val)){
+            return false;
+        }
+        umap.put(val,arr.size());
+        arr.add(val);
+        return true;
+
+    }
+    
+    public boolean remove(int val) {
+        if(!umap.containsKey(val)){
+            return false;
+        }
+        int index=umap.get(val);
+        int lastIdx=arr.size()-1;
+        int lastval=arr.get(lastIdx);
+        arr.set(index,lastval);
+        umap.put(lastval,index);
+        arr.remove(lastIdx);
+        umap.remove(val);
+        return true;
+    }
+    
+    public int getRandom() {
+        
+         int getRandomIndex = random.nextInt(arr.size());
+        return arr.get(getRandomIndex);
+    }
+}
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
