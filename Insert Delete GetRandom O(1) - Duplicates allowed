@@ -1,0 +1,49 @@
+class RandomizedCollection {
+public:
+    vector<int>arr;
+    unordered_map<int,unordered_set<int>>umap;
+    RandomizedCollection() {
+        arr.clear();
+        umap.clear();
+    } 
+    bool insert(int val) {
+         arr.push_back(val);
+         umap[val].insert(arr.size()-1);
+         return umap[val].size()==1;
+    }
+    
+    bool remove(int val) {
+        if(umap.find(val)==umap.end()){
+            return false;
+        }
+        int index_to_remove=*(umap[val].begin());
+        umap[val].erase(index_to_remove);
+      
+        int last_index=arr.size()-1;
+        if(index_to_remove!=last_index){
+            umap[arr[last_index]].erase(last_index);
+            umap[arr[last_index]].insert(index_to_remove);
+            swap(arr[last_index],arr[index_to_remove]);
+
+        }
+        arr.pop_back();
+        if(umap[val].size()==0){
+            umap.erase(val);
+        }
+        return true;
+
+    }
+    
+    int getRandom() {
+        int random_index=rand()%(arr.size());
+        return arr[random_index];
+    }
+};
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
